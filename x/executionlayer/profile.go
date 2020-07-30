@@ -44,6 +44,8 @@ func (po *ProfileObject) WriteFile() {
 func (po *ProfileObject) AddLogs(prefix string, postfix string) {
 	if po.count > 1000 {
 		return
+	} else if po.count == 1000 {
+		po.WriteFile()	
 	}
 	now := time.Now()
 	timeStamp := now.UnixNano() / 1000000
