@@ -11,6 +11,7 @@ type ProfileObject struct {
 	filePath string
 	logs []string
 	count int
+	beforeTime int64
 }
 
 var instance *ProfileObject
@@ -28,6 +29,7 @@ func NewProfileObject(fileName string) *ProfileObject {
 		"/tmp/" + fileName,
 		[]string{},
 		0,
+		0,
 	}
 }
 
@@ -42,15 +44,33 @@ func (po *ProfileObject) WriteFile() {
 	}
 }
 
-func (po *ProfileObject) AddLogs(prefix string, postfix string) {
-	if po.count > 100 {
+func (po *ProfileObject) AddLogs(prefix string, postfix string, simulate bool) {
+	testCount := 100
+	if po.count == testCount {
+		po.WriteFile()
 		return
-	} else if po.count == 100 {
-		po.WriteFile()	
+	} else if po.count > testCount {
+		return
 	}
+
+	if simulate == true {
+		prefix += "CheckTx"
+	} else {
+		prefix += "DeliveTx"
+	}
+
 	now := time.Now()
 	timeStamp := now.UnixNano() / 1000000
-	log := strings.Join([]string{prefix, strconv.FormatInt(timeStamp, 10), postfix}, " ") + "\n"
+	log := strings.Join([]string{prefix, "TimeStamp", strconv.FormatInt(timeStamp, 10), postfix}, " ") + "\n"
 	po.logs = append(po.logs, log)
-	po.count++
+
+	if strings.Contains(prefix, "Before") {
+		po.beforeTime = timeStamp
+		return
+	}
+	gap := timeStamp - po.beforeTime
+	log = strings.Join([]string{prefix, "Gap", strconv.FormatInt(gap, 10), postfix}, " ") + "\n"
+	if strings.Contains(prefix, "After Commit") {
+		po.count++
+	}
 }
