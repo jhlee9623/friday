@@ -692,10 +692,13 @@ func execute(ctx sdk.Context, k ExecutionLayerKeeper, msg types.MsgExecute, simu
 		Deploys:         deploys,
 		ProtocolVersion: &protocolVersion,
 	}
+
+	GetInstance().AddLogs("Before Execute", "handler.execute")
 	resExecute, err := k.client.Execute(ctx.Context(), reqExecute)
 	if err != nil {
 		return false, err.Error()
 	}
+	GetInstance().AddLogs("Before Execute", "handler.execute")
 
 	effects := []*transforms.TransformEntry{}
 	switch resExecute.GetResult().(type) {
@@ -726,7 +729,9 @@ func execute(ctx sdk.Context, k ExecutionLayerKeeper, msg types.MsgExecute, simu
 	}
 
 	// Commit
+	GetInstance().AddLogs("Before Commit", "handler.execute")
 	postStateHash, bonds, errGrpc := grpc.Commit(k.client, stateHash, effects, &protocolVersion)
+	GetInstance().AddLogs("After Commit", "handler.execute")
 	log += errGrpc
 
 	candidateBlock := ctx.CandidateBlock()
