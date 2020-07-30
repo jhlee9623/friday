@@ -698,7 +698,7 @@ func execute(ctx sdk.Context, k ExecutionLayerKeeper, msg types.MsgExecute, simu
 	if err != nil {
 		return false, err.Error()
 	}
-	GetInstance().AddLogs("Before Execute", "handler.execute")
+	GetInstance().AddLogs("After Execute", "handler.execute")
 
 	effects := []*transforms.TransformEntry{}
 	switch resExecute.GetResult().(type) {

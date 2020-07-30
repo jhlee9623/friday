@@ -2,6 +2,7 @@ package executionlayer
 
 import (
 	"io/ioutil"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -49,7 +50,7 @@ func (po *ProfileObject) AddLogs(prefix string, postfix string) {
 	}
 	now := time.Now()
 	timeStamp := now.UnixNano() / 1000000
-	log := strings.Join([]string{prefix, string(timeStamp), postfix}, " ") + "\n"
+	log := strings.Join([]string{prefix, strconv.FormatInt(timeStamp, 10), postfix}, " ") + "\n"
 	po.logs = append(po.logs, log)
 	po.count++
 }
