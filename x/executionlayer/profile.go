@@ -43,9 +43,9 @@ func (po *ProfileObject) WriteFile() {
 }
 
 func (po *ProfileObject) AddLogs(prefix string, postfix string) {
-	if po.count > 1000 {
+	if po.count > 100 {
 		return
-	} else if po.count == 1000 {
+	} else if po.count == 100 {
 		po.WriteFile()	
 	}
 	now := time.Now()
