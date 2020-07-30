@@ -17,15 +17,15 @@ var instance *ProfileObject
 
 func GetInstance() *ProfileObject {
 	if instance == nil {
-		instance = NewProfileObject("/tmp")
+		instance = NewProfileObject("result.txt")
 	}
 	return instance
 }
 
 
-func NewProfileObject(filePath string) *ProfileObject {
+func NewProfileObject(fileName string) *ProfileObject {
 	return &ProfileObject{
-		"/tmp/" + filePath,
+		"/tmp/" + fileName,
 		[]string{},
 		0,
 	}
@@ -36,7 +36,7 @@ func (po *ProfileObject) WriteFile() {
 	for i:= 0; i < len(po.logs); i++ {
 		content += po.logs[i]
 	}
-	err := ioutil.WriteFile("/tmp/result.txt", []byte(content), 0)
+	err := ioutil.WriteFile(po.filePath, []byte(content), 0777)
 	if err != nil {
 		panic(err)
 	}
