@@ -28,7 +28,7 @@ func NewProfileObject(fileName string) *ProfileObject {
 	return &ProfileObject{
 		"/tmp/" + fileName,
 		[]string{},
-		0,
+		1,
 		0,
 	}
 }
@@ -53,23 +53,24 @@ func (po *ProfileObject) AddLogs(prefix string, postfix string, simulate bool) {
 		return
 	}
 
+	command := ""
 	if simulate == true {
-		prefix += "CheckTx"
+		command += "CheckTx"
 	} else {
-		prefix += "DeliveTx"
+		command += "DeliveTx"
 	}
 
 	now := time.Now()
 	timeStamp := now.UnixNano() / 1000000
-	log := strings.Join([]string{prefix, "TimeStamp", strconv.FormatInt(timeStamp, 10), postfix}, " ") + "\n"
+	log := strings.Join([]string{prefix, command, "TimeStamp", strconv.FormatInt(timeStamp, 10), postfix}, " ") + "\n"
 	po.logs = append(po.logs, log)
-
 	if strings.Contains(prefix, "Before") {
 		po.beforeTime = timeStamp
 		return
 	}
 	gap := timeStamp - po.beforeTime
-	log = strings.Join([]string{prefix, "Gap", strconv.FormatInt(gap, 10), postfix}, " ") + "\n"
+	log = strings.Join([]string{prefix, command, "Gap", strconv.FormatInt(gap, 10), postfix}, " ") + "\n"
+	po.logs = append(po.logs, log)
 	if strings.Contains(prefix, "After Commit") {
 		po.count++
 	}
