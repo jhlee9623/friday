@@ -23,12 +23,11 @@ func GetInstance() *ProfileObject {
 	return instance
 }
 
-
 func NewProfileObject(fileName string) *ProfileObject {
 	return &ProfileObject{
 		"/tmp/" + fileName,
 		[]string{},
-		1,
+		0,
 		0,
 	}
 }
@@ -45,9 +44,10 @@ func (po *ProfileObject) WriteFile() {
 }
 
 func (po *ProfileObject) AddLogs(prefix string, postfix string, simulate bool) {
-	testCount := 100
+	testCount := 1000
 	if po.count == testCount {
 		po.WriteFile()
+		po.count++
 		return
 	} else if po.count > testCount {
 		return
