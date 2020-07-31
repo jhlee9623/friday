@@ -44,7 +44,7 @@ func (po *ProfileObject) WriteFile() {
 }
 
 func (po *ProfileObject) AddLogs(prefix string, postfix string, simulate bool) {
-	testCount := 1000
+	testCount := 100
 	if po.count == testCount {
 		po.WriteFile()
 		po.count++
