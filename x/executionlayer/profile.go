@@ -56,6 +56,7 @@ func (po *ProfileObject) AddLogs(prefix string, postfix string, simulate bool) {
 	command := ""
 	if simulate == true {
 		command += "CheckTx"
+		return
 	} else {
 		command += "DeliveTx"
 	}
